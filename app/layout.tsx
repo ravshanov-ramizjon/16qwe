@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
-import { TbBrandThreads } from "react-icons/tb";
 import "./globals.css";
-import Link from "next/link";
-import Image from "next/image";
+import Aside from "@/components/castom/Aside";
+import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuIndicator,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+	NavigationMenuViewport,
+} from "@/components/ui/navigation-menu"
+import { IoMdAdd } from "react-icons/io";
 
 export const metadata: Metadata = {
 	title: "Home . Threads",
@@ -19,69 +28,27 @@ export default function RootLayout({
 			<body
 				className={`antialiased flex items-center justify-between w-full `}
 			>
-				<aside className="flex flex-col justify-between h-screen w-fit px-4 py-6">
-					<Link href="/">
-						<TbBrandThreads color="white" size={34} />
-					</Link>
-					<nav>
-						<ul className="flex flex-col gap-4 text-[#6B6B6B] ">
-							<li>
-								<Link href="/">
-									home
-									{/* <Image
-										src="/navigation/home.svg"
-										alt="icon"
-										width="20"
-										height="20"
-									/> */}
-								</Link>
-							</li>
-							<li>
-								<Link href="/search">
-									search
-									{/* <Image
-										src="/navigation/search.svg"
-										alt="icon"
-										width="20"
-										height="20"
-									/> */}
-								</Link>
-							</li>
-							<li>add</li>
-							<li>
-								<Link href="/activity">
-									activity
-									{/* <Image
-										src="/navigation/like.svg"
-										alt="icon"
-										width="20"
-										height="20"
-									/> */}
-								</Link>
-							</li>
-							<li>
-								<Link href="/profile">
-									profile
-									{/* <Image
-										src="navigation/profile.svg"
-										style={{ fill: "#6B6B6B" }}
-										alt="icon"
-										width="20"
-										height="20"
-									/> */}
-								</Link>
-							</li>
-						</ul>
-					</nav>
-					<div>
-						<button>pin</button>
-						<button>set</button>
-					</div>
-				</aside>
-				<main className="max-w-[500px] w-full mx-auto bg-white h-[95vh] rounded-2xl overflow-y-auto">
-					{children}
-				</main>
-				<button className="text-white">+</button>
+				<Aside />
+				<div className="w-[500px]">
+					<center className="py-1 flex items-center justify-center text-white">
+					Для вас
+						<NavigationMenu>
+							<NavigationMenuList>
+								<NavigationMenuItem> 
+									<NavigationMenuTrigger className="bg-black text-[#dadcde] hover:bg-black cursor-pointer"></NavigationMenuTrigger>
+									<NavigationMenuContent className="bg-[#181818] text-white border-none">
+										<NavigationMenuLink className="cursor-pointer">Link</NavigationMenuLink>
+										<NavigationMenuLink className="cursor-pointer">Link</NavigationMenuLink>
+									</NavigationMenuContent>
+								</NavigationMenuItem>
+							</NavigationMenuList>
+						</NavigationMenu>
+					</center>
+					<main className="max-w-[500px] w-full mx-auto bg-[#181818] h-[92vh] rounded-2xl overflow-y-auto">
+						{children}
+					</main>
+				</div>
+				<button className="text-white"><IoMdAdd size={25} className="bg-[#171717] w-25 h-20 m-4 rounded-lg hover:w-27 hover:h-22 transform" /></button>
 			</body>
 		</html>
 	);
