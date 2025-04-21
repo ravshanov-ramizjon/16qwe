@@ -1,89 +1,113 @@
+'use client'
 import Link from "next/link";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { TbBrandThreads } from "react-icons/tb";
 import { GoHomeFill } from "react-icons/go";
 import { FaRegHeart, FaRegUser, FaSearch } from "react-icons/fa";
-import { IoMdAdd } from "react-icons/io";
-import { Button } from "../ui/button";
 import { MdOutlinePushPin } from "react-icons/md";
 import { RiListSettingsFill } from "react-icons/ri";
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import ThemeSwitcher from "./ThemeSwitcher";
+import { usePageTitle } from '@/context/PageTitleContext';
+import Modal from "./modal";
 
 export default function Aside() {
-    return (
-        <>
-            <aside className="flex flex-col justify-between items-center h-screen w-fit px-4 py-6">
-                <Link href="/">
-                    <TbBrandThreads color="white" size={34} />
-                </Link>
-                <nav>
-                    <ul className="flex flex-col items-center gap-6 text-[#8d7b7b] ">
-                        <li>
-                            <Link href="/">
-                                <GoHomeFill color="white" size={30} />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/search">
-                                <FaSearch size={25} />
-                            </Link>
-                        </li>
-                        <li className="cursor-pointer"><IoMdAdd size={15} className="bg-[#171717] w-15 h-10 rounded-lg" /></li>
-                        <li>
-                            <Link href="/activity">
-                                <FaRegHeart size={25} />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/profile">
-                                <FaRegUser size={25} />
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
-                <div className="flex items-center flex-col gap-4">
-                    <button className="text-[#6B6B6B] cursor-pointer"></button>
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger className="bg-black text-[#dadcde] hover:bg-black cursor-pointer">
-                                    <MdOutlinePushPin size={25} />
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="bg-[#181818] text-white border-none">
-                                    <NavigationMenuLink className="cursor-pointer">Профиль</NavigationMenuLink>
-                                    <NavigationMenuLink className="cursor-pointer">Настройки</NavigationMenuLink>
-                                    <NavigationMenuLink className="cursor-pointer">Сообщить о проблеме</NavigationMenuLink>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger className="bg-black text-[#dadcde] hover:bg-black cursor-pointer">
-                                    <RiListSettingsFill size={25} />
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="bg-[#181818] text-white border-none ">
-                                    <NavigationMenuLink className="cursor-pointer">Выйти</NavigationMenuLink>
-                                    <NavigationMenuLink className="cursor-pointer">Сообщить о проблеме</NavigationMenuLink>
-                                    <NavigationMenuLink className="cursor-pointer">Настройки</NavigationMenuLink>
-                                    <NavigationMenuLink className="cursor-pointer">Статистика</NavigationMenuLink>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-                </div>
-            </aside>
-        </>
-    );
+	const pathname = usePathname();
+	const { setPageTitle } = usePageTitle();
+
+	const handleNavClick = (title: string) => {
+		setPageTitle(title);
+	};
+
+	const isActive = (path: string) => pathname === path;
+
+	const handleClickSettings = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		e.preventDefault();
+	};
+
+	return (
+		<aside className="flex flex-col justify-between items-center h-screen w-fit px-4 py-6">
+			<Link href="/">
+				<TbBrandThreads color="white" size={34} />
+			</Link>
+			<nav>
+				<ul className="flex flex-col items-center gap-4 text-[#8d7b7b]">
+					<li onClick={() => handleNavClick('Для вас')}>
+						<Link href="/">
+							<GoHomeFill
+								color={isActive("/") ? "white" : "#8d7b7b"}
+								className="hover:bg-[#171717] p-1 w-15 h-10 rounded-lg"
+							/>
+						</Link>
+					</li>
+					<li onClick={() => handleNavClick('Поиск')}>
+						<Link href="/search">
+							<FaSearch
+								color={isActive("/search") ? "white" : "#8d7b7b"}
+								className="hover:bg-[#171717] p-2 w-15 h-10 rounded-lg"
+							/>
+						</Link>
+					</li>
+					<li className="cursor-pointer">
+                        <Modal/>
+					</li>
+					<li onClick={() => handleNavClick('Действия')}>
+						<Link href="/activity">
+							<FaRegHeart
+								color={isActive("/activity") ? "white" : "#8d7b7b"}
+								className="hover:bg-[#171717] p-2 w-15 h-10 rounded-lg"
+							/>
+						</Link>
+					</li>
+					<li onClick={() => handleNavClick('Профиль')}>
+						<Link href="/profile">
+							<FaRegUser
+								color={isActive("/profile") ? "white" : "#8d7b7b"}
+								className="hover:bg-[#171717] p-2 w-15 h-10 rounded-lg"
+							/>
+						</Link>
+					</li>
+				</ul>
+			</nav>
+
+			<div className="flex items-center flex-col gap-4">
+				<DropdownMenu>
+					<DropdownMenuTrigger className="text-[#8d7b7b] hover:text-[#dadcde] hover:bg-black cursor-pointer">
+						<MdOutlinePushPin size={25} />
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className="bg-black text-white">
+						<DropdownMenuItem>Для вас</DropdownMenuItem>
+						<DropdownMenuItem>Подписки</DropdownMenuItem>
+						<DropdownMenuItem>вам поставили "Нравится"</DropdownMenuItem>
+						<DropdownMenuItem>Сохраненное</DropdownMenuItem>
+						<DropdownMenuItem>Поиск</DropdownMenuItem>
+						<DropdownMenuItem>Действия</DropdownMenuItem>
+						<DropdownMenuItem>Профиль</DropdownMenuItem>
+						<DropdownMenuItem>Статистика</DropdownMenuItem>
+						<DropdownMenuItem>Пользовательские ленты</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+
+				<DropdownMenu>
+					<DropdownMenuTrigger onClick={handleClickSettings} className="text-[#8d7b7b] hover:text-[#dadcde] hover:bg-black cursor-pointer">
+						<RiListSettingsFill size={25} />
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className="bg-black text-white border-gray-500">
+						<DropdownMenuItem onClick={handleClickSettings}><ThemeSwitcher /></DropdownMenuItem>
+						<DropdownMenuItem>Настройки</DropdownMenuItem>
+						<DropdownMenuSeparator className="bg-gray-500" />
+						<DropdownMenuItem>Сообщить о проблеме</DropdownMenuItem>
+						<DropdownMenuItem className="text-red-500">Выйти</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</div>
+		</aside>
+	);
 }
