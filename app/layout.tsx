@@ -1,61 +1,22 @@
-'use client';
-import type { Metadata } from "next";
 import "./globals.css";
-import Aside from "@/components/castom/Aside";
-import { PageTitleProvider, usePageTitle } from '@/context/PageTitleContext';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { IoMdAdd } from "react-icons/io";
-import { AddSheet } from "@/components/castom/AddSheet";
+import { PageTitleProvider } from "@/context/PageTitleContext";
+import SessionProvider from "@/components/castom/SessionProvider";
+import { getServerSession } from "next-auth";
+import { LayoutContent } from "@/components/castom/LayoutContent"; 
 
-function LayoutContent({ children }: { children: React.ReactNode }) {
-	const { pageTitle } = usePageTitle();
-
-	return (
-		<>
-			<Aside />
-			<div className="w-[500px]">
-				<center className="py-1 flex items-center justify-center text-white">
-					<button className="cursor-pointer">{pageTitle}</button>
-					<DropdownMenu>
-						<DropdownMenuTrigger className="bg-black text-[#8d7b7b] hover:text-[#dadcde] hover:bg-black cursor-pointer inline-block rotate-90 ml-4 rounded-full border-1 border-gray-500 px-1">
-							&gt;
-						</DropdownMenuTrigger>
-						<DropdownMenuContent className="bg-black text-white border-gray-500">
-							<DropdownMenuItem>Для вас</DropdownMenuItem>
-							<DropdownMenuItem>Подписки</DropdownMenuItem>
-							<DropdownMenuItem>вам поставили "Нравится"</DropdownMenuItem>
-							<DropdownMenuItem>Сохраненное</DropdownMenuItem>
-							<DropdownMenuSeparator className="bg-gray-500" />
-							<DropdownMenuItem>Создать новую ленту</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</center>
-				<main className="max-w-[500px] w-full mx-auto bg-[#181818] h-[92vh] rounded-2xl overflow-y-auto hide-scrollbar">
-					{children}
-				</main>
-			</div>
-			<button className="text-white pt-90">
-				<AddSheet/>
-			</button>
-		</>
-	);
-}
-
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
+	const session = await getServerSession();
+
 	return (
 		<html lang="en">
 			<body className="antialiased flex items-center justify-between w-full">
-				<PageTitleProvider>
-					<LayoutContent>{children}</LayoutContent>
-				</PageTitleProvider>
+				<SessionProvider session={session}>
+					<PageTitleProvider>
+						<LayoutContent>{children}</LayoutContent>
+					</PageTitleProvider>
+				</SessionProvider>
 			</body>
 		</html>
 	);

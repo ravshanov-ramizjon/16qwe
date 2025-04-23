@@ -53,7 +53,7 @@ const Page: React.FC<PageProps> = () => {
 					"Star of Keeping Up With The Kardashians",
 				],
 				followers: "250M+",
-				avatar: "/",
+				avatar: "https://images.unsplash.com/photo-1502764613149-7f1d229e230f?crop=faces&fit=crop&w=100&h=100",
 			},);
 		}, 1000);
 	}, []);
@@ -91,7 +91,7 @@ const Page: React.FC<PageProps> = () => {
 							<Skeleton className="w-10 h-10 rounded-full" />
 						) : (
 							<Image
-								src={profileData?.avatar || "/profile/avatar"}
+								src={profileData?.avatar || ""}
 								alt="profile logo"
 								width={40}
 								height={40}
