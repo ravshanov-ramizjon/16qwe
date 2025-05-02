@@ -6,7 +6,6 @@ const userData: Prisma.UserCreateInput[] = [
   {
     name: 'Alice',
     email: 'alice@prisma.io',
-    image: 'https://randomuser.me/api/portraits/women/1.jpg',  // поле image
     posts: {
       create: [
         {
@@ -24,7 +23,6 @@ const userData: Prisma.UserCreateInput[] = [
   {
     name: 'Bob',
     email: 'bob@prisma.io',
-    image: 'https://randomuser.me/api/portraits/men/2.jpg',  // поле image
     posts: {
       create: [
         {
