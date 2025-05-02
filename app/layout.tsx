@@ -4,7 +4,7 @@ import SessionProvider from "@/components/castom/SessionProvider";
 import { getServerSession } from "next-auth";
 import { LayoutContent } from "@/components/castom/LayoutContent"; 
 
-export default async function RootLayout({
+export default async function Layout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	const session = await getServerSession();
