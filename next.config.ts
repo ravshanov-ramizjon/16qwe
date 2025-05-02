@@ -5,8 +5,9 @@ const nextConfig: NextConfig = {
 
   images: {
     domains: [
-      "images.unsplash.com", // для аватарок из Unsplash
-      "lh3.googleusercontent.com", // если юзер залогинился через Google
+      "images.unsplash.com", 
+      "lh3.googleusercontent.com", 
+      "avatars.githubusercontent.com", 
     ],
   },
 };
